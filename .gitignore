@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+# Pilot results stay local until Gate D decides
+pilot-results/
+
+# Never commit credentials
+.env
+.env.*
+!.env.example
+auth.json
+.credentials.json
+settings.local.json
