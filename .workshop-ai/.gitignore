@@ -1,0 +1,4 @@
+# Workshop AI: generated or local-only files
+tasks/*/brief.md
+handoffs/
+.snapshots/

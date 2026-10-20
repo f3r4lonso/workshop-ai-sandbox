@@ -11,7 +11,6 @@ You can stop after any run; tell the agent which runs you did.
 Set-Alias wai "$env:USERPROFILE\workshop\applications\workshop-ai\wai.cmd"
 $sandbox = "$env:USERPROFILE\workshop\applications\workshop-ai-sandbox"
 $runs    = "$env:USERPROFILE\workshop\applications\workshop-ai-sandbox-runs"
-$shared  = "$env:USERPROFILE\workshop\infra\clients"
 ```
 
 Each run gets its own folder made from the fixed starting point (no commits needed):
@@ -23,7 +22,7 @@ cd $sandbox; git worktree add --detach "$runs\<run>" pilot-base; cd "$runs\<run>
 ## B. A baseline run (plain Claude Code), e.g. `t1-base`
 
 1. Make the run folder (above) with `<run>` = `t1-base`.
-2. Write the start time. `claude --add-dir $shared`
+2. Write the start time. `claude` (the shared agents load from the `workshop` plugin)
 3. Paste the baseline first message from tasks.md with the task's Objective and criteria.
 4. Answer the session as needed. Count every message you type after the first one.
 5. When every criterion is met (or you stop): write the accepted time, then type `/context` and `/cost` and copy
@@ -44,8 +43,8 @@ cd $sandbox; git worktree add --detach "$runs\<run>" pilot-base; cd "$runs\<run>
 7. **Resume check:** `wai resume t2-empty-csv` → `y` → when it has answered, ask
    "What decisions are recorded for this task?" → copy the answer to the results file → `/exit`.
 8. **Handoff:** `wai handoff create t2-empty-csv --to codex` → open
-   `.workshop-ai\handoffs\t2-empty-csv-1\` and read every file → `wai handoff approve t2-empty-csv-1` → type
-   `reviewed` → `y` → `wai handoff show t2-empty-csv-1`. Do part D now.
+   `.workshop-ai\handoffs\t2-empty-csv-1\` and read every file → `wai handoff approve t2-empty-csv-1` → `y`
+   (type `reviewed` only if asked: gitleaks is installed, so it should not be) → `wai handoff show t2-empty-csv-1`. Do part D now.
 
 For **T1 with the tool** use the same steps with `t1-tool`, task id `t1-column-option` and the T1 context files;
 skip steps 7–8.
@@ -68,12 +67,12 @@ skip steps 7–8.
    file, then stop. Do not change code." → `/context`, `/cost` → `/exit`.
 3. `wai checkpoint t3-validation` → `n` to the tests (nothing to test yet) → `y` to save.
 4. `wai handoff create t3-validation --to claude` → read the package files → `wai handoff approve t3-validation-1`
-   → `reviewed` → `y` → `wai handoff show t3-validation-1` → run the `claude …` command it prints.
+   → `y` → `wai handoff show t3-validation-1` → run the `claude …` command it prints.
 5. Session 2: it should first state the decisions and next action (criterion a). Then let it implement.
    `/context`, `/cost` → `/exit`. `wai checkpoint t3-validation` → `y` → `y`.
 
 For **T3 baseline** (`t3-base`): session 1 in plain Claude Code with the design-only instruction; copy whatever you
-think session 2 needs; `/exit`; start a new `claude --add-dir $shared` and paste it with the task text.
+think session 2 needs; `/exit`; start a new `claude` and paste it with the task text.
 
 ## F. When you are done
 
